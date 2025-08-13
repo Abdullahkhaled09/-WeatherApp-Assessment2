@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 30px; }
+        input, button { padding: 10px; font-size: 16px; }
+        .weather-box, .forecast-box { margin-top: 20px; }
+        img { vertical-align: middle; }
+    </style>
+</head>
+<body>
+    <h1>Welcome To Weather APP</h1>
+    <form method="post">
+        <input type="text" name="city" placeholder="Enter city name" required>
+        <button type="submit">Get Weather</button>
+    </form>
+    <br>
+    <button onclick="getLocation()">Get Weather for My Location</button>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    {% if weather %}
+        <div class="weather-box">
+            <h2>{{ weather.city }}, {{ weather.country }}</h2>
+            <p><strong>{{ weather.temperature }}°C</strong> - {{ weather.description }}</p>
+            
+        </div>
+    {% endif %}
+
+    {% if forecast %}
+        <div class="forecast-box">
+            <h3>5-Day Forecast</h3>
+            {% for day in forecast %}
+                <div>
+                    <strong>{{ day.date }}</strong> - {{ day.temperature }}°C - {{ day.description }}
+                   
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    fetch(`/weather_by_coords?lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.error) {
+                                alert(data.error);
+                            } else {
+                                alert(`Current location: ${data.city}, ${data.country}\nTemperature: ${data.temperature}°C\n${data.description}`);
+                            }
+                        });
+                }, function() {
+                    alert("Unable to retrieve your location");
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+</body>
+</html>

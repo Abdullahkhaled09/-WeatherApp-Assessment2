@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head><title>Weather History</title></head>
+<body>
+    <h1>Saved Weather Records</h1>
+    <a href="/">Back to Home</a>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>City</th>
+            <th>Temp (°C)</th>
+            <th>Description</th>
+            <th>Date Saved</th>
+            <th>Actions</th>
+        </tr>
+        {% for record in records %}
+        <tr>
+            <td>{{ record.city }}</td>
+            <td>{{ record.temperature }}</td>
+            <td>{{ record.description }}</td>
+            <td>{{ record.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+                <a href="{{ url_for('update_record', record_id=record.id) }}">Edit</a> |
+                <a href="{{ url_for('delete_record', record_id=record.id) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>Update Weather Record</title></head>
+<body>
+    <h1>Update Record</h1>
+    <form method="post">
+        <p>City: <input type="text" name="city" value="{{ record.city }}"></p>
+        <p>Temp (°C): <input type="text" name="temperature" value="{{ record.temperature }}"></p>
+        <p>Description: <input type="text" name="description" value="{{ record.description }}"></p>
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>
